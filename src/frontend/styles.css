@@ -1,0 +1,42 @@
+.centrado {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+
+body {
+    background: #FFEFBA; 
+    background: -webkit-linear-gradient(to right, #FFFFFF, #FFEFBA); 
+    background: linear-gradient(to right, #FFFFFF, #FFEFBA);
+}
+
+
+#dataTableUsers td,
+#dataTableUsers th {
+    background-color: transparent !important;
+}
+
+#editPanel {
+    background-color: transparent !important;
+    max-width: 80%;
+    margin: auto;
+}
+
+#createPanel {
+    background-color: transparent !important;
+    max-width: 80%;
+    margin: auto;
+}
+
+
+.nuevoEmpleado {
+    display: flex;
+    flex-direction: row;
+    column-gap: 20px;
+    
+
+    vertical-align: middle;
+    text-align: center;
+
+    margin-bottom: 20px;
+}
