@@ -8,16 +8,32 @@ const connection = mysql.createConnection({
 });
 
 const createEmpleadosController = async (req, res) => {
-    try
-    {
-        return;
+    try {
+        const {nombre, cargo, sueldo } = req.body;
+
+        if (!nombre || !cargo || sueldo === undefined) {
+            return res.status(400).json({ msg: "Faltan datos obligatorios" });
+        }
+
+        connection.query(
+            "INSERT INTO personal (nombre, cargo, sueldo) VALUES (?, ?, ?)",
+            [nombre, cargo, sueldo],
+            (e, results) => {
+                if (e) {
+                    return res.status(500).json({ msg: "Error al crear un empleado" });
+                } else {
+                    // results.insertId tiene el id generado (auto_increment)
+                    return res.status(201).json({ msg: "Empleado creado exitosamente", id: results.insertId });
+                }
+            }
+        );
+    } catch (e) {
+        return res.status(500).json({ msg: "Error inesperado", error: e.message });
     }
-    catch(e)
-    {
-        return;
-    }
-    
-}
+};
+
+
+
 
 
 const updateEmpleadosController = async (req, res) => {

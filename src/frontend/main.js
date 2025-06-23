@@ -72,10 +72,43 @@ window.addEventListener("load", async () => {
 
 
 
+
+
+
+
+
+
+
+
+
+
 const createEmpleado = async () => {
     try
     {
-        alert("Create");
+        const id = Math.floor(Math.random() * (100000000000 - 100 + 1)) + 100;
+        const nombreCampo = document.getElementById("editNombre");
+        const cargoCampo = document.getElementById("editCargo");
+        const sueldoCampo = document.getElementById("editSueldo");
+        
+
+        const resultado = await fetch(`/api/empleados`, {
+            method: "POST",
+            
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                nombre: nombreCampo.value,
+                cargo: cargoCampo.value,
+                sueldo: sueldoCampo.value
+            })
+        });
+        const data = await resultado.json();
+
+        alert(data.msg);
+        await initDataTable();
+        cancelarUpdate();
     }
     catch(e)
     {
@@ -83,8 +116,21 @@ const createEmpleado = async () => {
     }
 }
 function showCreatePanel() {
-    const element = document.getElementById("createPanel");
+    const element = document.getElementById("editPanel");
     element.style.display="block";
+    const titulo = document.getElementById("tituloPanel");
+    titulo.innerText = "Crear Empleado";
+    const boton = document.getElementById("actualizarButton");
+    boton.onclick = createEmpleado;
+    boton.innerText = "Crear";
+
+    const nombreCampo = document.getElementById("editNombre");
+    nombreCampo.value = "";
+    const cargoCampo = document.getElementById("editCargo");
+    cargoCampo.value = "";
+    const sueldoCampo = document.getElementById("editSueldo");
+    sueldoCampo.value = "";
+
 }
 function closeCreatePanel() {
     const element = document.getElementById("createPanel");
@@ -97,19 +143,8 @@ function closeCreatePanel() {
 
 
 
-const deleteEmpleado = async (idEmpleado) => {
-    try
-    {
-        const resultado = await fetch(`/api/empleados/${idEmpleado}`, {method: "DELETE"});
-        const data = await resultado.json();
 
-        alert(data);
-    }
-    catch(e)
-    {
-        alert(e);
-    }
-};
+
 
 
 
@@ -123,10 +158,30 @@ const deleteEmpleado = async (idEmpleado) => {
 const updateEmpleado = async (idEmpleado) => {
     try
     {
-        const resultado = await fetch(`/api/empleados/${idEmpleado}`, {method: "PUT"});
+        const nombreCampo = document.getElementById("editNombre");
+        const cargoCampo = document.getElementById("editCargo");
+        const sueldoCampo = document.getElementById("editSueldo");
+
+
+
+        const resultado = await fetch(`/api/empleados/${idEmpleado}`, {
+            method: "PUT",
+            
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                nombre: nombreCampo.value,
+                cargo: cargoCampo.value,
+                sueldo: sueldoCampo.value
+            })
+        });
         const data = await resultado.json();
 
-        alert(data);
+        alert(data.msg);
+        await initDataTable();
+        cancelarUpdate();
     }
     catch(e)
     {
@@ -137,10 +192,61 @@ async function showEditPanel(id, nombre, cargo, sueldo) {
     let elemento = document.getElementById("editPanel");
     elemento.style.display = "block";
 
+    const titulo = document.getElementById("tituloPanel");
+    titulo.innerText = "Actualizar Empleado";
+    const buttonActualizar = document.getElementById("actualizarButton");
+    buttonActualizar.onclick = async () => await updateEmpleado(id);
+    buttonActualizar.innerText = "Actualizar";
+
     const nombreCampo = document.getElementById("editNombre");
     nombreCampo.value = nombre;
+    const cargoCampo = document.getElementById("editCargo");
+    cargoCampo.value = cargo;
+    const sueldoCampo = document.getElementById("editSueldo");
+    sueldoCampo.value = sueldo;
 }
 function cancelarUpdate() {
     let elemento = document.getElementById("editPanel");
     elemento.style.display = "none";
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const deleteEmpleado = async (idEmpleado) => {
+    try
+    {
+        const resultado = await fetch(`/api/empleados/${idEmpleado}`, {method: "DELETE"});
+        const data = await resultado.json();
+
+        alert("Usuario eliminado con éxito");
+        await initDataTable();
+    }
+    catch(e)
+    {
+        alert(e);
+    }
+};
+
